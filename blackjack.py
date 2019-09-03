@@ -1,8 +1,11 @@
 import random
 import copy
 
+#List acting as a standard 52 card deck
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
+#Checks card taken from deck, changes the numerical value to its 
+#corresponding face card value
 def card_check(card):
 	if card == 11:
 		card = 'J'
@@ -14,21 +17,27 @@ def card_check(card):
 		card = 'A'
 	return card 
 		
-
+#Card is drawn and given to player
 def hit(hand):
 	card = deck.pop(0)
 	hand.append(card_check(card))
 	return hand
-	
+
+#Calculates the total of the hand
 def total(hand):
 	total = 0
 	numerical_hand = copy.deepcopy(hand) 
+	#Create new temporary hand so we can later compare the face card
 	for index, card in enumerate(numerical_hand):
 		if card == 'J' or card == 'Q' or card == 'K':
 			numerical_hand[index] = 10
 		elif card == 'A':
 			numerical_hand[index] = 11
-			
+	
+	#For loop through the sorted hand. This is done so that we can see
+	#if we should add 1 or 11 to the total, by having the A card be the
+	#last card we are able to find the best possible case within the 
+	#hand
 	for card in sorted(numerical_hand):
 		if card == 11:
 			if total >= 11:
@@ -39,11 +48,13 @@ def total(hand):
 			total += card
 			
 	return total
-	
+
+#Prints the scores
 def print_scores(hand, dealer):
 	print("The dealer has " + str(dealer) + "with a total score of " + str(total(dealer)))
 	print("You have " + str(hand) + "with a total score of " + str(total(hand)))
-	
+
+#Checks different scenarios for game over
 def game_over_check(hand, dealer):
 	is_game_over = 0
 	
@@ -58,7 +69,8 @@ def game_over_check(hand, dealer):
 	elif total(dealer) > 21:
 		is_game_over = 1
 	return is_game_over
-	
+
+#Prints out how the game finished
 def game_over(hand, dealer):
 	if total(hand) == 21 and total(dealer) == 21:
 		print("Both players got a blackjack! The round is a draw\n")
@@ -87,6 +99,7 @@ def game_over(hand, dealer):
 	
 	exit()
 
+#Gives out starting 2 cards to dealer and player
 def starting_hand(hand, dealer):
 	card = deck.pop(0)
 	hand.append(card_check(card))
@@ -97,7 +110,7 @@ def starting_hand(hand, dealer):
 	card = deck.pop(0)
 	dealer.append(card_check(card))
 
-
+#main function
 def game():
 	hand = []
 	dealer = []
@@ -120,5 +133,6 @@ def game():
 				while total(dealer) < 17:
 					hit(dealer)
 				game_over(hand, dealer)
+				
 		
 game()
