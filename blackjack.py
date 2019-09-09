@@ -97,7 +97,20 @@ def game_over(hand, dealer):
 		print("The dealer's hand is the same as your's! Its a draw!\n")
 		print_scores(hand, dealer)
 	
-	exit()
+	play_again()
+	
+def play_again():
+	answer = input('Would you like to play again? y/n \n').lower()
+	if answer == 'y':
+		game()
+	elif answer == 'n':
+		print('Thank you for playing!')
+		exit()
+	else:
+		print('That is not a valid response, please choose y or n')
+		play_again()
+	
+	
 
 #Gives out starting 2 cards to dealer and player
 def starting_hand(hand, dealer):
@@ -116,23 +129,23 @@ def game():
 	dealer = []
 	move = 0
 	
-	answer = input('Welcome to Blackjack, would you like to play? y/n \n').lower()
-	if answer == 'y':
-		random.shuffle(deck)
+	print('Welcome to Blackjack')
+	
+	random.shuffle(deck)
 		
-		starting_hand(hand, dealer)
-		while move != 's':
-			print("The dealers hand is " + str(dealer) + "for a total of " + str(total(dealer)) + "\n")
-			print("Your hand is " + str(hand) + "for a total of " + str(total(hand)) + "\n")
-			move = input('Would you like to [H]it or [S]tand ').lower()
-			if move == 'h':
-				hit(hand)
-				if game_over_check(hand, dealer) == 1:
-					game_over(hand, dealer)
-			elif move == 's':
-				while total(dealer) < 17:
-					hit(dealer)
+	starting_hand(hand, dealer)
+	while move != 's':
+		print("The dealers hand is " + str(dealer) + "for a total of " + str(total(dealer)) + "\n")
+		print("Your hand is " + str(hand) + "for a total of " + str(total(hand)) + "\n")
+		move = input('Would you like to [H]it or [S]tand ').lower()
+		if move == 'h':
+			hit(hand)
+			if game_over_check(hand, dealer) == 1:
 				game_over(hand, dealer)
+		elif move == 's':
+			while total(dealer) < 17:
+				hit(dealer)
+			game_over(hand, dealer)
 				
 		
 game()
